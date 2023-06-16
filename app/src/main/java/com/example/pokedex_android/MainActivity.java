@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.pokedex_android.Services.PokemonService;
@@ -19,15 +18,13 @@ import com.example.pokedex_android.Services.PokemonService;
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.pokedex_android.MESSAGE";
     public PokemonService pokemonService;
-    public Loader loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        imageView = (ImageView) activity.findViewById(R.id.pokeball_loader);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Log.d("Fetching: ", "Init Pokemons");
@@ -36,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessage(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.editText);
+        EditText editText = findViewById(R.id.editText);
         String message = editText.getText().toString();
         System.out.println(message);
         System.out.println(pokemonService.getPokemons());
