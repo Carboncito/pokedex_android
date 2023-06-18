@@ -70,21 +70,4 @@ public class PokemonService extends Http {
     public int getCount() { return count; }
     public String getNextPagination() { return nextPagination; }
     public String getPreviusPagination() { return previusPagination; }
-
-//    public Bitmap requestImage (String name) {
-//        Bitmap image;
-//        String url = "https://img.pokemondb.net/artwork/large/"+name+".jpg";
-//        getImage(url, new Http.VolleyCallBackImage() {
-//            @Override
-//            public void onSuccess(Bitmap response) {
-//                image = response;
-//            }
-//            @Override
-//            public void onError(VolleyError volleyError) {
-//                Log.e("Error", "Loading image :(", volleyError);
-//            }
-//        });
-//
-//        return image;
-//    }
 }
