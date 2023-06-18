@@ -1,18 +1,19 @@
 package com.example.pokedex_android;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.content.Intent;
+import android.animation.LayoutTransition;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.pokedex_android.Services.PokemonService;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,36 +28,48 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        onInitListeners();
+
         Log.d("Fetching: ", "Init Pokemons");
         pokemonService = new PokemonService(this);
     }
 
-    public void sendMessage(View view) {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = findViewById(R.id.editText);
-        String message = editText.getText().toString();
-        System.out.println(message);
-        System.out.println(pokemonService.getPokemons());
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-    }
+    private void onInitListeners() {
+        LinearLayout viewSearcher = findViewById(R.id.view_searcher);
+        EditText searcher = findViewById(R.id.searcher);
+        TextView cancelButton = findViewById(R.id.txt_cancel_search);
+        ListView pokemonList = findViewById(R.id.pokemon_list);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
+        searcher.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    cancelButton.setVisibility(View.VISIBLE);
+                } else {
+                    cancelButton.setVisibility(View.GONE);
+                }
+                viewSearcher.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+                viewSearcher.getLayoutTransition().setDuration(350);
+            }
+        });
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.new_group) {
-            Toast.makeText (this, "New group clicked!!", Toast.LENGTH_SHORT).show();
-        }
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v != null) {
+                    InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    keyboard.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+                searcher.clearFocus();
+                cancelButton.setVisibility(View.GONE);
+            }
+        });
 
-        if (item.getItemId() == R.id.web_whatsapp) {
-            Toast.makeText (this, "Web Whatsapp clicked!!", Toast.LENGTH_SHORT).show();
-        }
-
-        return true;
+        pokemonList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(), "title", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
